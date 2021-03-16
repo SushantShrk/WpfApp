@@ -1,0 +1,125 @@
+﻿<Window x:Class="WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        xmlns:mvvm="clr-namespace:WpfApp.ViewModel"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        
+       
+        Title="{Binding Path=AppName, FallbackValue=Title}"
+        
+        Height="300" Width="711">
+
+    <Window.Resources>
+        <mvvm:CustomerViewModel x:Key="CustomerViewModel"/>
+
+        <!--<ObjectDataProvider x:Name="enumLog" MethodName="GetValues"
+                           ObjectType="{x:Type sys:Enum}">
+           <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="mvvm.CustomerViewModel:Elog"/>
+           </ObjectDataProvider.MethodParameters>
+            
+        </ObjectDataProvider>-->
+        <ControlTemplate x:Key="roundbutton" TargetType="Button">
+            <Grid>
+                <!--<Ellipse x:Name="backgroundElement"   Stroke="{TemplateBinding Foreground}" Height="100" Width="100">
+                    <Ellipse.Fill>
+                        <LinearGradientBrush StartPoint = "0,0.2" EndPoint = "0.2,1.4">
+                            <GradientStop Offset = "0" Color = "Red" />
+                            <GradientStop Offset = "1" Color = "Orange" />
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+
+                </Ellipse>--> 
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <!--<Setter Property = "RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX = "0.8" ScaleY = "0.8" 
+                        CenterX = "0" CenterY = "0"  />
+                        </Setter.Value>
+                    </Setter>-->
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+    </Window.Resources>
+
+
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top" DataContext="{StaticResource CustomerViewModel}">
+        
+        <StackPanel Orientation="Vertical" Background="AliceBlue">
+        <Label>Customer Name</Label>
+            <TextBox     Text="{Binding RelativeSource={RelativeSource AncestorLevel=1,AncestorType=StackPanel}, Path=Background}"></TextBox>
+            <TextBox Width="136" x:Name="custName" Text="{Binding Customer.Name, UpdateSourceTrigger=PropertyChanged, 
+                ValidatesOnDataErrors=True}"
+                     Validation.ValidationAdornerSite="{Binding ElementName=addornt}"
+                     ></TextBox>
+            <Label Name="addornt" Content="{Binding ElementName=custName, Path=(Validation.Errors)[0].ErrorContent }"></Label>
+
+            <TextBox Name="lastname" Width="100"
+                     Text="{Binding Customer.LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     Validation.ValidationAdornerSite="{Binding ElementName=addLastName}"
+                
+                >
+                
+            </TextBox>
+            <Label Target="{Binding ElementName=firstName}">FirstName</Label>
+            <TextBox x:Name="firstName" />
+
+            <Label Target="{x:Reference firstName}">FirstName</Label>
+            <TextBox x:Name="firstName2" />
+
+            <Label Name="addLastName" Content="{Binding ElementName=lastname, Path=(Validation.Errors)[0].ErrorContent }"></Label>
+
+            <Button Command="{Binding UpdateCommand}"
+                    Template="{StaticResource roundbutton}"
+                    >Update
+
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="FontWeight" Value="Bold">
+                        </Setter>
+   
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="FontSize" Value="35"/>
+                            </Trigger>
+                            
+                        </Style.Triggers>
+                        
+                        
+                        
+                    </Style>
+                    
+                </Button.Style>
+            </Button>
+
+
+            <ComboBox Name="cmbo"  ItemsSource="{Binding StrategyTypes}" >
+                
+            </ComboBox>
+
+            <Button  Command="{Binding ProgramCommnad}" Template="{StaticResource roundbutton}">Click</Button>
+            
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+         
+          
+
+        </StackPanel>
+        
+        
+    </StackPanel>
+    
+
+</Window>
+ 
